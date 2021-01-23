@@ -54,7 +54,7 @@ struct ContentView: View {
                                 .rotationEffect(.degrees(animate ? 0 : -220))
                                 .offset(x: animate ? 0 : 130, y: animate ? 0 : -230)
                                 .opacity(animate ? 1 : 0)
-                    )
+                        )
                         .rotationEffect(.degrees(-14), anchor: .center)
                         .offset(x: -9.8, y: -24)
                     
@@ -89,25 +89,33 @@ struct ContentView: View {
         }
         .frame(width: UIScreen.main.bounds.size.width-10, height: 500)
         .scaleEffect(scale ? 4 : 1, anchor: .leading)
-            .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now()+2) {
-                    withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 0.5, blendDuration: 0.5).speed(0.4)) {
-                        self.animate = true
-                    }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now()+2) {
+                withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 0.5, blendDuration: 0.5).speed(0.4)) {
+                    self.animate = true
                 }
-                
-                DispatchQueue.main.asyncAfter(deadline: .now()+4.5) {
-                    withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 0.5, blendDuration: 0.6).speed(0.4)) {
-                        self.scale = true
-                    }
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now()+4.5) {
+                withAnimation(Animation.interactiveSpring(response: 0.5, dampingFraction: 0.5, blendDuration: 0.6).speed(0.4)) {
+                    self.scale = true
                 }
-                
-                DispatchQueue.main.asyncAfter(deadline: .now()+7) {
-                    withAnimation(Animation.interactiveSpring(response: 0.4, dampingFraction: 0.6, blendDuration: 0.5).speed(0.1)) {
-                        self.remove = true
-                    }
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now()+7) {
+                withAnimation(Animation.interactiveSpring(response: 0.4, dampingFraction: 0.6, blendDuration: 0.5).speed(0.1)) {
+                    self.remove = true
                 }
+            }
         }
+        .overlay(
+            Image("abclo")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 150, height: 60)
+                .offset(y: 80)
+            , alignment: .bottom
+        )
     }
 }
 
