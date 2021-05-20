@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    private let strokeColor = Color.red
+    private let strokeColor = Color(red: 0.644, green: 0.0, blue: 0.098)
     private let lineWidth: CGFloat = 25.0
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
