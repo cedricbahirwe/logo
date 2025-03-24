@@ -21,15 +21,15 @@ struct ContentView: View {
     @State private var remove = false
     var body: some View {
         VStack {
-            HStack {
-                HStack {
+            HStack(spacing: 0) {
+                HStack(spacing: 0) {
                     Arc(startAngle: .degrees(120), endAngle: .degrees(60), clockwise: true)
                         .stroke(strokeColor, lineWidth: lineWidth)
                         .frame(width: 100, height: 100)
                         
                         //Animate
                         .rotationEffect(.degrees(animate ? 19 : -50))
-                        .offset(x: animate ? 0 : -30, y: animate ? 0 : -100)
+                        .offset(x: animate ? -7 : -30, y: animate ? 0 : -100)
                         .opacity(animate ? 1 : 0)
                     
                     
@@ -84,7 +84,7 @@ struct ContentView: View {
                         .offset(x: animate ? 0 : -30, y: animate ? 0 : 200)
                         .opacity(animate ? 1 : 0)
                 }
-                .offset(x: 0, y: -10)
+                .offset(x: 9, y: -10)
             }.offset(x: remove ? -900 : 0, y: 0)
         }
         .frame(width: UIScreen.main.bounds.size.width-10, height: 500)
@@ -105,6 +105,18 @@ struct ContentView: View {
             DispatchQueue.main.asyncAfter(deadline: .now()+7) {
                 withAnimation(Animation.interactiveSpring(response: 0.4, dampingFraction: 0.6, blendDuration: 0.5).speed(0.1)) {
                     self.remove = true
+                }
+            }
+
+            DispatchQueue.main.asyncAfter(deadline: .now()+8) {
+                withAnimation(Animation.interactiveSpring(response: 0.4, dampingFraction: 0.6, blendDuration: 0.5).speed(0.1)) {
+                    self.remove = false
+                }
+            }
+
+            DispatchQueue.main.asyncAfter(deadline: .now()+10) {
+                withAnimation(Animation.interactiveSpring(response: 0.15, dampingFraction: 0.85, blendDuration: 0.25).speed(0.1)) {
+                    self.scale = false
                 }
             }
         }
@@ -153,17 +165,19 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 struct ScaledBezier: Shape {
-    let bezierPath: UIBezierPath
-    
+    let path: Path
+
+    init(bezierPath: UIBezierPath) {
+        self.path = Path(bezierPath.cgPath)
+    }
+
     func path(in rect: CGRect) -> Path {
-        let path = Path(bezierPath.cgPath)
-        
         // Figure out how much bigger we need to make our path in order for it to fill the available space without clipping.
         let multiplier = min(rect.width, rect.height)
-        
+
         // Create an affine transform that uses the multiplier for both dimensions equally.
         let transform = CGAffineTransform(scaleX: multiplier, y: multiplier)
-        
+
         // Apply that scale and send back the result.
         return path.applying(transform)
     }
